@@ -6,7 +6,7 @@ import type {
   ChatCompletionMessageParam,
 } from '@mlc-ai/web-llm';
 import type { Message, Messages } from '@/types';
-import { createWebLLMEngine } from '@/llmUtils';
+import { createWebLLMEngine, registerServiceWorker } from '@/llmUtils';
 import { useCallback, useEffect, useState } from 'react';
 import Chat from '@/components/widgets/Chat';
 
@@ -68,7 +68,8 @@ export default function Home() {
 
   useEffect(() => {
     (async () => {
-      const engine = await createWebLLMEngine(initProgressCallback);
+      await registerServiceWorker();
+      const engine = await createWebLLMEngine(initProgressCallback, true);
       setEngine(engine);
     })();
   }, [initProgressCallback]);

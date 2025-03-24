@@ -2,9 +2,11 @@
   "name": "web-llm",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build-sw": "rollup -c rollup.config.js",
+    "build": "next build && npm run build-sw",
     "start": "next start",
     "lint": "next lint"
   },
@@ -22,6 +24,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -29,6 +33,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
     "eslint-config-prettier": "^10.1.1",
+    "rollup": "^4.37.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
