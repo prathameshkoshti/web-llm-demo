@@ -12,8 +12,9 @@ import Chat from '@/components/widgets/Chat';
 
 export default function Home() {
   const [engine, setEngine] = useState<WebWorkerMLCEngine | null>(null);
-  const [engineInitialized, setEngineInitialized] = useState(false);
-  const [messages, setMessages] = useState<Messages>([]);
+  const [messages, setMessages] = useState<Messages>([
+    { role: 'system', content: 'You are a helpful DuckDB AI assistant.' },
+  ]);
   const [message, setMessage] = useState<Message | null>(null);
   const [response, setResponse] = useState<Message | null>(null);
   const [progress, setProgress] = useState(0);
@@ -78,25 +79,7 @@ export default function Home() {
     }
   }, [converse, message]);
 
-  useEffect(() => {
-    if (engine !== null && !engineInitialized) {
-      (async () => {
-        const messages: Messages = [
-          { role: 'system', content: 'You are a helpful DuckDB AI assistant.' },
-          { role: 'user', content: 'Hello' },
-        ];
-
-        const reply = await engine.chat.completions.create({
-          messages,
-        });
-        console.log(reply.choices[0].message);
-        console.log(reply.usage);
-        setEngineInitialized(true);
-      })();
-    }
-  }, [engine, engineInitialized]);
-
-  if (!engineInitialized) {
+  if (!engine) {
     return (
       <div className="h-dvh flex justify-center">
         <p>{progress}%</p>
@@ -105,7 +88,7 @@ export default function Home() {
     );
   }
 
-  if (engineInitialized) {
+  if (engine) {
     return (
       <div className="h-dvh flex justify-center">
         <Chat
